@@ -1,0 +1,69 @@
+{
+  "name": "webapp",
+  "version": "1.0.0",
+  "description": "Configuration for Kodi-Voice skill",
+  "author": "Joe Ipson <joe@ipson.me>",
+  "private": true,
+  "scripts": {
+    "dev": "node build/dev-server.js",
+    "start:dev": "webpack-dev-server --config ./build/webpack.dev.conf.js --progress --inline --watch-poll",
+    "start": "node build/dev-server.js",
+    "build": "node build/build.js"
+  },
+  "dependencies": {
+    "bulma": "^0.5.3",
+    "bulmaswatch": "^0.5.1",
+    "font-awesome": "^4.7.0",
+    "vue": "^2.3.3",
+    "vue-class-component": "^5.0.2",
+    "vue-meta": "^1.2.0",
+    "vue-router": "^2.3.1"
+  },
+  "devDependencies": {
+    "autoprefixer": "^7.1.2",
+    "chalk": "^2.0.1",
+    "connect-history-api-fallback": "^1.3.0",
+    "copy-webpack-plugin": "^4.0.1",
+    "css-loader": "^0.28.7",
+    "cssnano": "^3.10.0",
+    "eventsource-polyfill": "^0.9.6",
+    "express": "^4.14.1",
+    "extract-text-webpack-plugin": "^2.0.0",
+    "file-loader": "^0.11.1",
+    "friendly-errors-webpack-plugin": "^1.1.3",
+    "html-webpack-plugin": "^2.28.0",
+    "http-proxy-middleware": "^0.17.3",
+    "node-sass": "^4.5.3",
+    "opn": "^5.1.0",
+    "optimize-css-assets-webpack-plugin": "^2.0.0",
+    "ora": "^1.2.0",
+    "regexpu-core": "^4.1.3",
+    "rimraf": "^2.6.0",
+    "sass-loader": "^6.0.6",
+    "semver": "^5.3.0",
+    "shelljs": "^0.7.6",
+    "sw-precache-webpack-plugin": "^0.11.4",
+    "ts-loader": "^2.3.7",
+    "uglify-es": "^3.0.25",
+    "url-loader": "^0.5.8",
+    "vue-loader": "^13.0.5",
+    "vue-style-loader": "^3.0.1",
+    "vue-template-compiler": "^2.3.3",
+    "vue-typescript-import-dts": "^3.1.1",
+    "webpack": "^2.6.1",
+    "webpack-bundle-analyzer": "^2.2.1",
+    "webpack-dev-middleware": "^1.10.0",
+    "webpack-dev-server": "^2.9.1",
+    "webpack-hot-middleware": "^2.18.0",
+    "webpack-merge": "^4.1.0"
+  },
+  "engines": {
+    "node": ">= 4.0.0",
+    "npm": ">= 3.0.0"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not ie <= 8"
+  ]
+}
