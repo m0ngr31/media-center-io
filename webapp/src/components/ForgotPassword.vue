@@ -42,13 +42,18 @@
 </template>
 
 <script lang="ts">
-import Vue, { ComponentOptions } from 'vue';
+import Vue from 'vue';
+import Component from 'vue-class-component';
 
-export default {
+@Component({
   name: 'forgot-password',
-  metaInfo: {
-    title: 'Forgot Password'
+})
+export default class ForgotPassword extends Vue {
+  public metaInfo(): any {
+    return {
+      title: 'Forgot Password'
+    }
   }
-} as ComponentOptions<Vue>;
+}
 </script>
 

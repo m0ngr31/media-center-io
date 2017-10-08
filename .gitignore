@@ -76,4 +76,4 @@ typings
 
 # End of https://www.gitignore.io/api/node,typings,visualstudiocode
 
-**/*.js
+/webapp/src/**/*.js

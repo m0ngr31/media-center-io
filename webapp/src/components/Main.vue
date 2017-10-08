@@ -1,14 +1,28 @@
 <template>
-  <div>eyy lmao2</div>
+  <section class="section">
+    <div class="container">
+      <h1 class="title">
+        Hello World
+      </h1>
+      <p class="subtitle">
+        My first website with <strong>Bulma</strong>!
+      </p>
+    </div>
+  </section>
 </template>
 
 <script lang="ts">
-import Vue, { ComponentOptions } from 'vue';
+import Vue from 'vue';
+import Component from 'vue-class-component';
 
-export default {
-  name: 'Main',
-  metaInfo: {
-    title: 'Main'
+@Component({
+  name: 'main',
+})
+export default class Main extends Vue {
+  public metaInfo(): any {
+    return {
+      title: 'Main'
+    }
   }
-} as ComponentOptions<Vue>;
+}
 </script>

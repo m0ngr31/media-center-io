@@ -6,6 +6,7 @@ import Main from '@/components/Main.vue';
 import Login from '@/components/Login.vue';
 import Register from '@/components/Register.vue';
 import ForgotPassword from '@/components/ForgotPassword.vue';
+import ResetPassword from '@/components/ResetPassword.vue';
 
 Vue.use(Router)
 Vue.use(Meta);
@@ -32,6 +33,11 @@ export default new Router({
       path: '/forgot-password',
       name: 'Forgot Password',
       component: ForgotPassword
+    },
+    {
+      path: '/reset-password',
+      name: 'Reset Password',
+      component: ResetPassword
     }
   ]
 })

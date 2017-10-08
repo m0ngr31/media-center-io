@@ -49,13 +49,18 @@
 </template>
 
 <script lang="ts">
-import Vue, { ComponentOptions } from 'vue';
+import Vue from 'vue';
+import Component from 'vue-class-component';
 
-export default {
+@Component({
   name: 'login',
-  metaInfo: {
-    title: 'Login'
+})
+export default class Login extends Vue {
+  public metaInfo(): any {
+    return {
+      title: 'Login'
+    }
   }
-} as ComponentOptions<Vue>;
+}
 </script>
 
