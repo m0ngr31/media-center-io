@@ -1,0 +1,91 @@
+.fade-enter-active,
+.fade-leave-active {
+  transition-property: opacity;
+  transition-duration: .25s;
+}
+
+.fade-enter-active {
+  transition-delay: .25s;
+}
+
+.fade-enter,
+.fade-leave-active {
+  opacity: .25;
+}
+
+.is-dark {
+  background-color: #363636;
+  color: whitesmoke;
+}
+
+.is-white {
+  background-color: #fff;
+}
+
+.columns {
+  margin-top: 0px !important;
+  margin-bottom: 0px !important;
+  overflow-y: auto;
+}
+
+.column {
+  padding-top: 0px;
+  padding-bottom: 0px;
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
+
+.email-input,
+.password-input {
+  border-radius: 5px;
+  font-size: 20px;
+  padding-left: 15px;
+  color: #95A5A6;
+  margin-bottom: 5px;
+}
+
+.icon.user,
+.icon.password {
+  margin: 5px 10px 0 0;
+}
+
+.avatar img {
+  border-radius: 64px;
+  padding: 3px;
+  border: 1px solid #dbdbdb;
+}
+
+.forgot-password a {
+  color: #95A5A6;
+  font-weight: bold;
+  padding-right: 20px;
+}
+
+.login {
+  padding-top: 20px;
+}
+
+.login button {
+  /* border-radius: 40px; */
+  font-weight: bold;
+}
+
+.hero-body .container {
+  margin-top: -100px;
+}
+
+.hero.is-dark .section {
+  background-color: transparent;
+}
+
+.login-wrapper {
+  margin: -0.75rem;
+  overflow-y: hidden;
+}
+
+.hero-banner .title {
+  display: inline-block;
+  background-color: rgba(0, 0, 0, 0.6);
+  padding: 5px;
+}
+
