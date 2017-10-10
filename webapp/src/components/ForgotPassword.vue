@@ -20,7 +20,7 @@
             </div>
             <div class="section forgot-password">
               <p class="has-text-centered">
-                <router-link to="login">Cancel</router-link>
+                <router-link to="/auth/login">Cancel</router-link>
               </p>
             </div>
           </div>

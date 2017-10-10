@@ -26,8 +26,8 @@
             </div>
             <div class="section forgot-password">
               <p class="has-text-centered">
-                <router-link to="forgot-password">Forgot password</router-link>
-                <router-link to="register">Register</router-link>
+                <router-link to="/auth/forgot-password">Forgot password</router-link>
+                <router-link to="/auth/register">Register</router-link>
               </p>
             </div>
           </div>

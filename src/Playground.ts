@@ -1,18 +1,49 @@
-<template>
-  <div class="column">
-    <div class="field container">
-      <h3 class="title">Skill Configuration</h3>
-      <div class="control">
-        <textarea class="textarea max-height ta-margin" type="text" v-model="config"></textarea>
-        <a class="button is-primary is-medium is-pulled-right" style="margin-bottom: 20px; text-align: right;">Save Config</a>
-      </div>
-    </div>
-  </div>
-</template>
+import ParseIni from './Services/ParseIni';
 
-<script lang="ts">
-import Vue from 'vue';
-import Component from 'vue-class-component';
+export default class Playground {
+  parser: ParseIni;
+
+  constructor() {
+    this.parser = new ParseIni();
+  }
+
+  parse() {
+    this.parser.parse(blankConfig);
+    this.parser.set('amzn1.ask.device.XXX', 'address1', '10.0.0.2');
+    this.parser.setOjb(basicObj);
+
+    console.log(this.parser.ini);
+  }
+}
+
+const basicObj = {
+  global:
+  {
+    language: 'de',
+    deep_search: 'yes',
+    playlist_max_items: '100',
+    unwatched_shows_max_results: '100',
+    unwatched_episodes_max_results: '100',
+    unwatched_movies_max_results: '100',
+    loglevel: 'INFO',
+    logsensitive: 'yes'
+  },
+  alexa: { skill_id: '', slot_items_max: '100' },
+  DEFAULT:
+  {
+    scheme: 'https',
+    address: '127.0.0.1',
+    port: '8080',
+    subpath: '',
+    username: 'kodi',
+    password: 'kodi',
+    read_timeout: '120',
+    read_timeout_async: '0.01',
+    shutdown: '',
+    timezone: ''
+  },
+  'amzn1.ask.device.XXX': { address: '10.0.0.2' }
+};
 
 const blankConfig = `#
 # Global configuration
@@ -165,38 +196,3 @@ address = office-kodi
 # tap
 [amzn1.ask.device.XXX]
 address = living-room-kodi`;
-
-@Component({
-  name: 'edit-config',
-})
-export default class EditConfig extends Vue {
-  public metaInfo(): any {
-    return {
-      title: 'Edit Config'
-    }
-  }
-
-  data() {
-    return {
-      config: blankConfig
-    };
-  }
-}
-</script>
-
-<style scoped>
-.max-height {
-  height: 100vh;
-}
-
-.title {
-  font-size: 25px;
-  font-weight: 600;
-  margin-top: 15px;
-}
-
-.ta-margin {
-  margin-top: 25px;
-  margin-bottom: 10px;
-}
-</style>

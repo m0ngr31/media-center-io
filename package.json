@@ -4,12 +4,29 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "tsc --rootDir ./src/",
+    "start": "ts-node src/index.ts",
+    "start:debug": "ts-node --inspect=5858 --debug-brk --ignore false src/index.ts"
   },
-  "author": "",
+  "author": "Joe Ipson",
   "license": "MIT",
   "devDependencies": {
+    "@types/koa": "^2.0.39",
+    "@types/koa-bodyparser": "^3.0.25",
+    "@types/koa-logger": "^2.0.2",
+    "@types/koa-router": "^7.0.23",
+    "@types/node": "^8.0.33",
+    "koa-bodyparser": "^4.2.0",
+    "koa-logger": "^3.1.0",
+    "koa-router": "^7.2.1",
+    "ts-node": "^3.3.0",
     "tsc": "^1.20150623.0",
     "typescript": "^2.5.3"
+  },
+  "dependencies": {
+    "koa": "^2.3.0",
+    "reflect-metadata": "^0.1.10",
+    "typeorm": "^0.1.0",
+    "typescript-ioc": "^1.0.2"
   }
 }

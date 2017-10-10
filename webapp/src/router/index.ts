@@ -19,7 +19,6 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'Main',
       component: Main,
       children: [
         {
@@ -32,7 +31,6 @@ export default new Router({
     },
     {
       path: '/auth',
-      name: 'Auth',
       component: Auth,
       children: [
         {
