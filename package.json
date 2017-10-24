@@ -15,7 +15,7 @@
     "@types/koa-bodyparser": "^3.0.25",
     "@types/koa-logger": "^2.0.2",
     "@types/koa-router": "^7.0.23",
-    "@types/node": "^8.0.33",
+    "@types/node": "^8.0.45",
     "koa-bodyparser": "^4.2.0",
     "koa-logger": "^3.1.0",
     "koa-router": "^7.2.1",
@@ -25,8 +25,10 @@
   },
   "dependencies": {
     "koa": "^2.3.0",
+    "koa-jwt": "^3.2.2",
+    "pg": "^7.3.0",
     "reflect-metadata": "^0.1.10",
-    "typeorm": "^0.1.0",
+    "typeorm": "^0.1.1",
     "typescript-ioc": "^1.0.2"
   }
 }

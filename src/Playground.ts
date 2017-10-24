@@ -12,7 +12,9 @@ export default class Playground {
     this.parser.set('amzn1.ask.device.XXX', 'address1', '10.0.0.2');
     this.parser.setOjb(basicObj);
 
-    console.log(this.parser.ini);
+    console.log(this.parser.schema);
+
+    // console.log(this.parser.ini);
   }
 }
 
@@ -122,6 +124,7 @@ skill_id =
 # if Alexa is having problems distinguishing your requests (executing the
 # wrong Intent, for instance), you may need to increase this.
 slot_items_max = 100
+bob
 
 
 #
