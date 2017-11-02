@@ -79,3 +79,5 @@ typings
 /webapp/src/**/*.js
 
 /dist
+
+run.sh

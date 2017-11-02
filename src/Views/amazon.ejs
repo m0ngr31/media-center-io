@@ -1,0 +1,5 @@
+<script>
+  var data = JSON.parse('<%- JSON.stringify(data) %>');
+  window.opener.postMessage({ result: data }, 'http://localhost:8080');
+  window.close();
+</script>

@@ -1,0 +1,7 @@
+export SCHEME="http"
+export SERVER_URI="localhost:3000"
+export NODE_ENV="dev"
+export AMAZON_KEY=""
+export AMAZON_SECRET=""
+
+nodemon --exec "ts-node" ./src/index.ts

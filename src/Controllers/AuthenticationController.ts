@@ -9,12 +9,12 @@ export default class AuthenticationController {
   constructor( @Inject private authenticationService: AuthenticationService) { }
 
   public async getAllDirectors(ctx: IRouterContext) {
-    ctx.body = await this.directorService.findAll();
+    ctx.body = await this.authenticationService.findAll();
   }
 
   public async findDirectorById(ctx: IRouterContext) {
     try {
-      ctx.body = await this.directorService.findById(ctx.params.id);
+      ctx.body = await this.authenticationService.findById(ctx.params.id);
     } catch (e) {
       ctx.throw(404);
     }
@@ -23,7 +23,7 @@ export default class AuthenticationController {
   public async saveDirector(ctx: IRouterContext) {
     try {
       const director: Director = Director.newDirector(ctx.request.body);
-      const result = await this.directorService.save(director);
+      const result = await this.authenticationService.save(director);
       ctx.body = result;
     } catch (e) {
       ctx.throw(400, e.message);
@@ -36,7 +36,7 @@ export default class AuthenticationController {
       if (String(ctx.params.id) !== String(director.$id)) {
         ctx.throw(400);
       }
-      const result = await this.directorService.update(director);
+      const result = await this.authenticationService.update(director);
     } catch (e) {
       ctx.throw(400, e.message);
     }
@@ -44,7 +44,7 @@ export default class AuthenticationController {
 
   public async deleteDirector(ctx: IRouterContext) {
     const directorId = ctx.params.id;
-    await this.directorService.delete(directorId);
+    await this.authenticationService.delete(directorId);
     ctx.status = 200;
   }
 }

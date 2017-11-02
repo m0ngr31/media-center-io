@@ -21,7 +21,7 @@
                 </span>
               </p>
               <p class="control login">
-                <button class="button is-success is-outlined is-large is-fullwidth">Login</button>
+                <button v-on:click="loginAmazon" class="button is-success is-outlined is-large is-fullwidth">Login with Amazon</button>
               </p>
             </div>
             <div class="section forgot-password">
@@ -40,6 +40,7 @@
 <script lang="ts">
 import Vue from 'vue';
 import Component from 'vue-class-component';
+import PromiseWindow from 'promise-window';
 
 @Component({
   name: 'login',
@@ -49,6 +50,14 @@ export default class Login extends Vue {
     return {
       title: 'Login'
     }
+  }
+
+  loginAmazon () {
+    return PromiseWindow.open("http://localhost:3000/connect/amazon").then((data: any) => {
+      console.log(data);
+    }, (err: any) => {
+      console.log(err);
+    });
   }
 }
 </script>
