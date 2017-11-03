@@ -9,5 +9,8 @@ export class User {
   public email: string;
 
   @Column()
-  public password: string;
+  public name: string;
+
+  @Column()
+  public amazonId: string;
 }

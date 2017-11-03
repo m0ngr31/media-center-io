@@ -1,4 +1,4 @@
-import { getEntityManager } from 'typeorm';
+import { getManager } from 'typeorm';
 import { Singleton } from 'typescript-ioc';
 
 import { User } from '../Models/User';
@@ -8,30 +8,52 @@ export default class AuthenticationRepository {
   constructor() { }
 
   protected getRepository() {
-    return getEntityManager().getRepository(User);
+    return getManager().getRepository(User);
   }
 
-  public async getAllDirectors(): Promise<User[]> {
+  public async getAllUsers(): Promise<User[]> {
     return this.getRepository().find();
   }
 
-  public async findDirectorById(id: number): Promise<User> {
+  public async findUserById(id: number): Promise<User> {
     const result = await this.getRepository().findOneById(id);
     if (!result) {
-      throw new Error('No director was found for ID: ' + id);
+      throw new Error('No user was found for ID: ' + id);
     }
     return result;
   }
 
-  public async saveDirector(director: User): Promise<User> {
-    return this.getRepository().persist(director);
+  public async findUserByAmazonId(amazonId: string): Promise<User> {
+    const result = await this.getRepository().findOne({amazonId});
+    if (!result) {
+      throw new Error('No user was found for AmazonId: ' + amazonId);
+    }
+    return result;
   }
 
-  public async deleteDirectorWithId(id: number) {
+  public async createUser(user?: User): Promise<User> {
+    let newUser = this.getRepository().create();
+
+    if (user) {
+      newUser.amazonId = user.amazonId;
+      newUser.email = user.email;
+      newUser.name = user.name;
+
+      newUser = await this.saveUser(newUser);
+    }
+
+    return newUser;
+  }
+
+  public async saveUser(user: User): Promise<User> {
+    return this.getRepository().save(user);
+  }
+
+  public async deleteUserWithId(id: number) {
     await this.getRepository()
-      .createQueryBuilder('director')
+      .createQueryBuilder('user')
       .delete()
-      .where('director.id = :id', { id })
+      .where('user.id = :id', { id })
       .execute();
     return Promise.resolve();
   }

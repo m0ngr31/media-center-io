@@ -53,11 +53,9 @@ export default class Login extends Vue {
   }
 
   loginAmazon () {
-    return PromiseWindow.open("http://localhost:3000/connect/amazon").then((data: any) => {
+    return PromiseWindow.open('http://localhost:3000/connect/amazon', {height: 600, width: 800}).then((data: any) => {
       console.log(data);
-    }, (err: any) => {
-      console.log(err);
-    });
+    }, (err: any) => {});
   }
 }
 </script>
