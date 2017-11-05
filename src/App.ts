@@ -19,7 +19,7 @@ import Playground from './Playground';
 import AuthenticationRoutes from './Routes/AuthenticationRoutes';
 
 import { User } from './Models/User';
-import { Config } from './Models/Config';
+import { Device } from './Models/Device';
 
 export default class App {
 
@@ -37,7 +37,7 @@ export default class App {
       database: 'unnamed',
       entities: [
         User,
-        Config
+        Device
       ],
       synchronize: true,
       logging: false
@@ -53,7 +53,7 @@ export default class App {
     app.use(views(path.join(__dirname, '/Views'), { extension: 'ejs' }));
     app.use(
       jwt({
-        secret: 'pa$$word',
+        secret: <any>process.env.JWT_SECRET,
       }).unless({
         path: [/^\/connect/, /^\/callback/, /^\/Views/],
       })

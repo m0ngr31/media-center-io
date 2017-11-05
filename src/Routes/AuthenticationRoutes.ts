@@ -14,7 +14,7 @@ export default class AuthenticationRoutes extends IRoutes {
   protected getRoutes(): Route[] {
     return [
       Route.newRoute('/callback', 'get', async (ctx: IRouterContext) => this.authenticationController.login(ctx)),
-      Route.newRoute('/test', 'get', async (ctx: IRouterContext) => console.log('eyyy lmao')),
+      Route.newRoute('/test', 'get', async (ctx: IRouterContext) => this.authenticationController.verify(ctx)),
       // Route.newRoute('/login', 'post', (ctx: IRouterContext) => this.authenticationController.getAllDirectors(ctx)),
       // Route.newRoute('/reset-password/:id', 'post', (ctx: IRouterContext) => this.authenticationController.findDirectorById(ctx)),
       // Route.newRoute('/create-user/', 'post', (ctx: IRouterContext) => this.authenticationController.saveDirector(ctx)),

@@ -5,7 +5,7 @@ import { Inject, Singleton } from 'typescript-ioc';
 import axios from 'axios';
 
 import AuthenticationService from '../Services/AuthenticationService';
-import { User } from '../Models/User';
+import { User, IJWTobj } from '../Models/User';
 
 @Singleton
 export default class AuthenticationController {
@@ -19,23 +19,34 @@ export default class AuthenticationController {
       });
   }
 
+  private generateJWT(user: User) {
+    const jwtObj: IJWTobj = user.getObjForJwt();
+    return jwt.sign(jwtObj, <any>process.env.JWT_SECRET, { expiresIn: 60 * 60 * 24 * 14 });
+  }
+
+  private getUserFromToken(ctx: IRouterContext): IJWTobj {
+    const header = ctx.request.header;
+    const authToken = header.authorization.replace('Bearer ', '');
+    return <IJWTobj>jwt.verify(authToken, <any>process.env.JWT_SECRET);
+  }
+
   public async login(ctx: IRouterContext) {
     try {
       const user = await this.getAmazonUser(ctx.query.access_token);
-
-      let userLogin = new User();
-      userLogin.amazonId = user.user_id;
-      userLogin.name = user.name;
-      userLogin.email = user.email;
-
+      const userLogin: User = User.newUser(user);
       const userData = await this.authenticationService.loginOrCreate(userLogin);
-
-      const userToken = jwt.sign(user, "pa$$word");
+      const userToken = this.generateJWT(userData);
       await ctx.render('amazon', { userToken });
     } catch (e) {
       console.log(e);
       ctx.throw(401);
     }
+  }
+
+  public async verify(ctx: IRouterContext) {
+    const userObj: IJWTobj = this.getUserFromToken(ctx);
+    const user = await this.authenticationService.findByIdDevices(userObj.id);
+    ctx.body = user;
   }
 
   // public async getAllDirectors(ctx: IRouterContext) {

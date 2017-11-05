@@ -23,10 +23,18 @@ export default class AuthenticationRepository {
     return result;
   }
 
-  public async findUserByAmazonId(amazonId: string): Promise<User> {
-    const result = await this.getRepository().findOne({amazonId});
+  public async findUserByIdDevices(id: number): Promise<User> {
+    const result = await this.getRepository().findOneById(id, {relations: ["devices"]});
     if (!result) {
-      throw new Error('No user was found for AmazonId: ' + amazonId);
+      throw new Error('No user was found for ID: ' + id);
+    }
+    return result;
+  }
+
+  public async findUserByAmazonId(user_id: string): Promise<User> {
+    const result = await this.getRepository().findOne({ user_id });
+    if (!result) {
+      throw new Error('No user was found for AmazonId: ' + user_id);
     }
     return result;
   }
@@ -35,9 +43,9 @@ export default class AuthenticationRepository {
     let newUser = this.getRepository().create();
 
     if (user) {
-      newUser.amazonId = user.amazonId;
-      newUser.email = user.email;
-      newUser.name = user.name;
+      newUser.$user_id = user.$user_id;
+      newUser.$email = user.$email;
+      newUser.$name = user.$name;
 
       newUser = await this.saveUser(newUser);
     }

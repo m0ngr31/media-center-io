@@ -9,7 +9,7 @@ export default class AuthenticationService {
 
   public async loginOrCreate(user: User): Promise<User> {
     try {
-      return await this.findByAmazonId(user.amazonId);
+      return await this.findByAmazonId(user.$user_id);
     } catch (e) {
       return await this.create(user);
     }
@@ -17,6 +17,10 @@ export default class AuthenticationService {
 
   public async findById(id: number): Promise<User> {
     return this.authenticationRepository.findUserById(id);
+  }
+
+  public async findByIdDevices(id: number): Promise<User> {
+    return this.authenticationRepository.findUserByIdDevices(id);
   }
 
   public async findByAmazonId(amazonId: string) {
@@ -40,7 +44,7 @@ export default class AuthenticationService {
 
   public async update(user: User) {
     try {
-      await this.authenticationRepository.findUserById(user.id);
+      await this.authenticationRepository.findUserById(user.$id);
       return this.authenticationRepository.saveUser(user);
     } catch (e) {
       if (e instanceof Error) {
