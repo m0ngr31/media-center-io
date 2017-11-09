@@ -1,4 +1,4 @@
 <script>
-  window.opener.postMessage({ result: '<%- userToken %>' }, 'http://localhost:8080');
+  window.opener.postMessage({ result: '<%- userToken %>' }, '<%- webappUrl %>');
   window.close();
 </script>

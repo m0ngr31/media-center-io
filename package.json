@@ -1,14 +1,14 @@
 {
-  "name": "unnamed-kodi",
+  "name": "media-center-api",
   "version": "1.0.0",
-  "description": "",
+  "description": "Configuration for Media Center skill",
+  "author": "Joe Ipson",
   "main": "index.js",
   "scripts": {
     "build": "tsc --rootDir ./src/",
     "start": "./run.sh",
     "start:debug": "ts-node --inspect=5858 --debug-brk --ignore false src/index.ts"
   },
-  "author": "Joe Ipson",
   "license": "MIT",
   "devDependencies": {
     "@types/axios": "^0.14.0",

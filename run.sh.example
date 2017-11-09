@@ -5,5 +5,11 @@ export AMAZON_KEY=""
 export AMAZON_SECRET=""
 export JWT_SECRET=""
 export ENCRYPT_KEY=""
+export DB_NAME=""
+export DB_HOST=""
+export DB_PORT=""
+export DB_USER=""
+export DB_PASS=""
+export WEBAPP_URL=""
 
 nodemon --exec "ts-node" ./src/index.ts

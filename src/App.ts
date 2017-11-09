@@ -30,11 +30,11 @@ export default class App {
   private async createApp() {
     await createConnection({
       type: 'postgres',
-      host: 'localhost',
-      port: 5432,
-      username: 'postgres',
-      password: 'password',
-      database: 'unnamed',
+      host: <any>process.env.DB_HOST,
+      port: <any>process.env.DB_PORT,
+      username: <any>process.env.DB_USER,
+      password: <any>process.env.DB_PASS,
+      database: <any>process.env.DB_NAME,
       entities: [
         User,
         Device

@@ -1,7 +1,7 @@
 {
-  "name": "webapp",
+  "name": "media-center-webapp",
   "version": "1.0.0",
-  "description": "Configuration for Kodi-Voice skill",
+  "description": "Configuration for Media Center skill",
   "author": "Joe Ipson <joe@ipson.me>",
   "private": true,
   "scripts": {

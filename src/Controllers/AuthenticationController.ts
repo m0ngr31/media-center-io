@@ -36,7 +36,8 @@ export default class AuthenticationController {
       const userLogin: User = User.newUser(user);
       const userData = await this.authenticationService.loginOrCreate(userLogin);
       const userToken = this.generateJWT(userData);
-      await ctx.render('amazon', { userToken });
+      const webappUrl = <any>process.env.WEBAPP_URL;
+      await ctx.render('amazon', { userToken, webappUrl });
     } catch (e) {
       console.log(e);
       ctx.throw(401);
