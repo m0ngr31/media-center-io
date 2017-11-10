@@ -31,7 +31,7 @@ export default class App {
     await createConnection({
       type: 'postgres',
       host: <any>process.env.DB_HOST,
-      port: <any>process.env.DB_PORT,
+      port: parseInt(<any>process.env.DB_PORT),
       username: <any>process.env.DB_USER,
       password: <any>process.env.DB_PASS,
       database: <any>process.env.DB_NAME,
@@ -55,7 +55,7 @@ export default class App {
       jwt({
         secret: <any>process.env.JWT_SECRET,
       }).unless({
-        path: [/^\/connect/, /^\/callback/, /^\/Views/],
+        path: [/^\/connect/, /^\/callback/, /^\/Views/, /^\/oauth/],
       })
     );
 
