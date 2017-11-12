@@ -42,6 +42,8 @@ import Vue from 'vue';
 import Component from 'vue-class-component';
 import PromiseWindow from 'promise-window';
 
+import {Authentication} from '@/services/auth';
+
 @Component({
   name: 'login',
 })
@@ -54,7 +56,10 @@ export default class Login extends Vue {
 
   loginAmazon () {
     return PromiseWindow.open('http://localhost:3000/connect/amazon', {height: 600, width: 800}).then((data: any) => {
-      console.log(data);
+      const token = data.result;
+      const redirect = this.$route.query.from || '/';
+
+      Authentication.login(this, {token}, redirect);
     }, (err: any) => {});
   }
 }

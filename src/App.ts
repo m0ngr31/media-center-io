@@ -8,6 +8,7 @@ import * as mount from 'koa-mount';
 import * as jwt from 'koa-jwt';
 import * as Grant from 'grant-koa';
 import * as session from 'koa-session';
+import * as cors from 'koa2-cors';
 import 'reflect-metadata';
 
 import { createConnection } from 'typeorm';
@@ -43,24 +44,24 @@ export default class App {
       logging: false
     });
 
-    // const bob: Playground = new Playground();
-    // bob.parse();
-
     const app: Koa = new Koa();
     app.keys = ['grant'];
     const router: Router = new Router();
 
+    app.use(cors({
+      origin: <any>process.env.WEBAPP_URL,
+      credentials: true,
+      allowHeaders: ['Content-Type', 'Authorization', 'Accept'],
+    }));
     app.use(views(path.join(__dirname, '/Views'), { extension: 'ejs' }));
     app.use(
       jwt({
         secret: <any>process.env.JWT_SECRET,
       }).unless({
-        path: [/^\/connect/, /^\/callback/, /^\/Views/, /^\/oauth/],
+        path: [/^\/connect/, /^\/callback/, /^\/oauth/, /^\/auth\/login/],
       })
     );
 
-    // this.movieRoutes.register(router);
-    // this.directorRoutes.register(router);
     this.authenticationRoutes.register(router);
 
     const grant = new Grant({

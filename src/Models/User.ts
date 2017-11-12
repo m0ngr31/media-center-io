@@ -8,7 +8,8 @@ export interface IJWTobj {
   id: number,
   email: string,
   name: string,
-  user_id: string
+  user_id: string,
+  token?: string,
 }
 
 @Entity()
@@ -27,6 +28,18 @@ export class User {
 
   @Column('text')
   private config: any;
+
+  @Column({nullable: true})
+  private accessToken: string;
+
+  @Column({nullable: true})
+  private accessTokenExpiresOn: Date;
+
+  @Column({nullable: true})
+  private refreshToken: string;
+
+  @Column({nullable: true})
+  private refreshTokenExpiresOn: Date;
 
   @OneToMany(type => Device, device => device.user)
   public devices: Device[];

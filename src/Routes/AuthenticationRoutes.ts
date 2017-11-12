@@ -13,7 +13,9 @@ export default class AuthenticationRoutes extends IRoutes {
 
   protected getRoutes(): Route[] {
     return [
-      Route.newRoute('/callback', 'get', async (ctx: IRouterContext) => this.authenticationController.login(ctx)),
+      Route.newRoute('/callback', 'get', async (ctx: IRouterContext) => this.authenticationController.amazonLogin(ctx)),
+      Route.newRoute('/auth/login', 'post', async (ctx: IRouterContext) => this.authenticationController.loginFromToken(ctx)),
+      Route.newRoute('/auth/user', 'get', async (ctx: IRouterContext) => this.authenticationController.verify(ctx)),
       Route.newRoute('/test', 'get', async (ctx: IRouterContext) => this.authenticationController.verify(ctx)),
       // Route.newRoute('/login', 'post', (ctx: IRouterContext) => this.authenticationController.getAllDirectors(ctx)),
       // Route.newRoute('/reset-password/:id', 'post', (ctx: IRouterContext) => this.authenticationController.findDirectorById(ctx)),
