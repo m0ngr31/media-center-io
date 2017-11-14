@@ -9,7 +9,7 @@
             </h1>
             <div class="login-form">
               <p class="control login">
-                <button v-on:click="loginAmazon" class="button is-success is-outlined is-medium is-fullwidth">Login with Amazon</button>
+                <button @click="loginAmazon" class="button is-success is-outlined is-medium is-fullwidth">Login with Amazon</button>
               </p>
             </div>
           </div>
