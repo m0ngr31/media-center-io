@@ -19,7 +19,7 @@ export default class App extends Vue {
   public metaInfo(): any {
     return {
       title: 'Home',
-      titleTemplate: '%s | Kodi-Voice'
+      titleTemplate: '%s | Media Center'
     }
   }
 }

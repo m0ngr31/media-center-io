@@ -15,12 +15,12 @@
                 </span>
               </p>
               <p class="control login">
-                <button class="button is-success is-outlined is-large is-fullwidth">Forgot Password</button>
+                <button v-on:click="loginAmazon" class="button is-success is-outlined is-medium is-fullwidth">Login with Amazon</button>
               </p>
             </div>
             <div class="section forgot-password">
               <p class="has-text-centered">
-                <router-link to="/auth/login">Cancel</router-link>
+                <router-link to="/">Cancel</router-link>
               </p>
             </div>
           </div>
@@ -33,15 +33,29 @@
 <script lang="ts">
 import Vue from 'vue';
 import Component from 'vue-class-component';
+import PromiseWindow from 'promise-window';
+
+import {Authentication} from '@/services/auth';
+
+declare const process :any;
 
 @Component({
-  name: 'forgot-password',
+  name: 'oauth-login',
 })
-export default class ForgotPassword extends Vue {
+export default class OAuthLogin extends Vue {
   public metaInfo(): any {
     return {
-      title: 'Forgot Password'
+      title: 'Login'
     }
+  }
+
+  loginAmazon () {
+    return PromiseWindow.open(`${process.env.API_URL}/connect/amazon`, {height: 600, width: 800}).then((data: any) => {
+      const token = data.result;
+      const redirect = this.$route.query.from || '/';
+
+      Authentication.login(this, {token}, redirect);
+    }, (err: any) => {});
   }
 }
 </script>

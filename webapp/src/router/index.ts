@@ -7,6 +7,7 @@ import EditConfig from '@/components/EditConfig.vue';
 
 import Auth from '@/components/Auth.vue';
 import Login from '@/components/Login.vue';
+import OAuthLogin from '@/components/OAuthLogin.vue';
 // import Register from '@/components/Register.vue';
 // import ForgotPassword from '@/components/ForgotPassword.vue';
 // import ResetPassword from '@/components/ResetPassword.vue';
@@ -35,14 +36,21 @@ const appRoutes = new Router({
     {
       path: '/auth',
       component: Auth,
-      meta: { auth: false },
       children: [
         {
           path: '',
           alias: 'login',
           name: 'Login',
-          component: Login
+          component: Login,
+          meta: { auth: false },
         },
+        {
+          path: '/oauth',
+          alias: 'oauth',
+          name: 'OAuth Login',
+          component: OAuthLogin,
+          meta: { auth: true },
+        }
         // {
         //   path: 'register',
         //   name: 'Register',

@@ -12,7 +12,11 @@ export const Authentication = {
       this.user.authenticated = true;
 
       if (redirect) {
-        context.$router.push({path: redirect})
+        if(redirect.indexOf('http') === 0) {
+          location.replace(redirect);
+        } else {
+          context.$router.push({ path: redirect });
+        }
       }
     }).catch((err) => {
       context.error = err;
@@ -45,10 +49,12 @@ export const RouterCheckAuth = (to, from, next) => {
   if (to.matched.some(record => record.meta.auth)) {
     if (!Authentication.checkAuth()) {
       const redirectInfo = to.path && to.path !== '/' ? '?from=' + to.path : '';
-      next({ path: `/auth/login${redirectInfo}` })
+      next({ path: `/auth/login${redirectInfo}` });
     } else {
       next();
     }
+  } else if (Authentication.checkAuth() && to.name === 'Login') {
+    next({ path: '/' });
   } else {
     next();
   }

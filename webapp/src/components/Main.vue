@@ -6,7 +6,7 @@
           <div class="container">
             <div class="nav-left">
               <a class="nav-item" href="/">
-                <h1 class="title is-5">Kodi-Voice</h1>
+                <h1 class="title is-5">Media Center</h1>
               </a>
               <a class="nav-item" router-link to="edit">Edit Config</a>
               <a class="nav-item" router-link to="help">Help</a>
@@ -20,7 +20,7 @@
               <a class="nav-item" href="//github.com/m0ngr31/kodi-alexa/issues" target="_blank">
                 <i class="fa fa-bug"></i>&nbsp;Report an issue
               </a>
-              <!-- <a class="nav-item" href="//github.com/m0ngr31" target="_blank">
+              <a class="nav-item" href="//github.com/m0ngr31" target="_blank">
                 <span class="icon">
                   <i class="fa fa-github"></i>
                 </span>
@@ -29,7 +29,7 @@
                 <span class="icon">
                   <i class="fa fa-twitter"></i>
                 </span>
-              </a> -->
+              </a>
             </div>
           </div>
         </nav>

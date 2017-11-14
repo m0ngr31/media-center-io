@@ -1,6 +1,6 @@
 # webapp
 
-> Configuration for Kodi-Voice skill
+> Configuration for Media Center skill
 
 ## Build Setup
 
