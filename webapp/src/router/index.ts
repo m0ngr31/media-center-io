@@ -8,9 +8,6 @@ import EditConfig from '@/components/EditConfig.vue';
 import Auth from '@/components/Auth.vue';
 import Login from '@/components/Login.vue';
 import OAuthLogin from '@/components/OAuthLogin.vue';
-// import Register from '@/components/Register.vue';
-// import ForgotPassword from '@/components/ForgotPassword.vue';
-// import ResetPassword from '@/components/ResetPassword.vue';
 
 import {RouterCheckAuth} from '@/services/auth';
 
@@ -51,21 +48,6 @@ const appRoutes = new Router({
           component: OAuthLogin,
           meta: { auth: true },
         }
-        // {
-        //   path: 'register',
-        //   name: 'Register',
-        //   component: Register
-        // },
-        // {
-        //   path: 'forgot-password',
-        //   name: 'Forgot Password',
-        //   component: ForgotPassword
-        // },
-        // {
-        //   path: 'reset-password',
-        //   name: 'Reset Password',
-        //   component: ResetPassword
-        // }
       ]
     },
     {

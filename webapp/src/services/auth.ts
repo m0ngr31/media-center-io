@@ -5,19 +5,20 @@ export const Authentication = {
     authenticated: false
   },
 
-  login(context, data, redirect) {
-    Requests('post', '/auth/login', data).then((res) => {
+  login(context: any, data: any) {
+    const query = context.$route.query;
+    Requests.post('/auth/login', data).then((res) => {
       localStorage.setItem('token', data.token);
-
       this.user.authenticated = true;
+      context.$router.push({ path: query.from || '/', query });
+    }).catch((err) => {
+      context.error = err;
+    });
+  },
 
-      if (redirect) {
-        if(redirect.indexOf('http') === 0) {
-          location.replace(redirect);
-        } else {
-          context.$router.push({ path: redirect });
-        }
-      }
+  oauthLogin(context: any) {
+    Requests.post('/auth/login', {}).then((res) => {
+      location.replace(context.$route.redirect_uri);
     }).catch((err) => {
       context.error = err;
     });
@@ -45,16 +46,23 @@ export const Authentication = {
   }
 };
 
-export const RouterCheckAuth = (to, from, next) => {
-  if (to.matched.some(record => record.meta.auth)) {
-    if (!Authentication.checkAuth()) {
-      const redirectInfo = to.path && to.path !== '/' ? '?from=' + to.path : '';
-      next({ path: `/auth/login${redirectInfo}` });
-    } else {
-      next();
+export const RouterCheckAuth = (to: any, from: any, next: any) => {
+  if (to.matched.some((record: any) => record.meta.auth) && !Authentication.checkAuth()) {
+    const query = {
+      ...to.query
+    };
+
+    if (to.path && to.path !== '/') {
+      query.from = to.path;
     }
+
+    next({ path: '/auth/login', query });
   } else if (Authentication.checkAuth() && to.name === 'Login') {
-    next({ path: '/' });
+    if (to.query.from) {
+      next({ path: to.query.from, query: to.query });
+    } else {
+      next({ path: '/' });
+    }
   } else {
     next();
   }

@@ -41,9 +41,7 @@ export default class Login extends Vue {
   loginAmazon () {
     return PromiseWindow.open(`${process.env.API_URL}/connect/amazon`, {height: 600, width: 800}).then((data: any) => {
       const token = data.result;
-      const redirect = this.$route.query.from || '/';
-
-      Authentication.login(this, {token}, redirect);
+      Authentication.login(this, {token});
     }, (err: any) => {});
   }
 }

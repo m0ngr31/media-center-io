@@ -2,7 +2,7 @@ import axios, {AxiosPromise} from 'axios';
 
 import {Authentication} from './auth';
 
-declare const process;
+declare const process: any;
 
 axios.defaults.baseURL = process.env.API_URL;
 axios.interceptors.request.use((config) => {
@@ -14,24 +14,16 @@ axios.interceptors.request.use((config) => {
   return Promise.reject(error);
 });
 
-export const Requests = (method, url, data): AxiosPromise => {
-  let promise: AxiosPromise;
+export const Requests = {
+  post: (url: string, data: any): AxiosPromise => {
+    return axios.post(url, data);
+  },
 
-  switch (method) {
-    case 'get':
-      if (data) {
-        promise = axios.get(url, {params: data});
-      } else {
-        promise = axios.get(url);
-      }
-      break;
-    case 'post':
-      promise = axios.post(url, data);
-      break;
-    case 'put':
-      promise = axios.put(url, data);
-      break;
+  get: (url: string, data: any): AxiosPromise => {
+    return axios.get(url, { params: data });
+  },
+
+  put: (url: string, data: any): AxiosPromise => {
+    return axios.put(url, data);
   }
-
-  return promise;
 };
