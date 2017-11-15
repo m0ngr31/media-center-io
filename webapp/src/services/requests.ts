@@ -19,8 +19,8 @@ export const Requests = {
     return axios.post(url, data);
   },
 
-  get: (url: string, data: any): AxiosPromise => {
-    return axios.get(url, { params: data });
+  get: (url: string, data?: any): AxiosPromise => {
+    return axios.get(url, { params: data || {} });
   },
 
   put: (url: string, data: any): AxiosPromise => {

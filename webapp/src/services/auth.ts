@@ -6,11 +6,14 @@ export const Authentication = {
   },
 
   login(context: any, data: any) {
-    const query = context.$route.query;
+    const query = { ...context.$route.query };
+    const path = query.from || '/';
+    delete query.from;
+
     Requests.post('/auth/login', data).then((res) => {
       localStorage.setItem('token', data.token);
       this.user.authenticated = true;
-      context.$router.push({ path: query.from || '/', query });
+      context.$router.push({ path, query });
     }).catch((err) => {
       context.error = err;
     });
@@ -48,9 +51,7 @@ export const Authentication = {
 
 export const RouterCheckAuth = (to: any, from: any, next: any) => {
   if (to.matched.some((record: any) => record.meta.auth) && !Authentication.checkAuth()) {
-    const query = {
-      ...to.query
-    };
+    const query = { ...to.query };
 
     if (to.path && to.path !== '/') {
       query.from = to.path;

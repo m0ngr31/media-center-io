@@ -12,7 +12,7 @@
                 Give Amazon permission to use this app?
               </p>
               <p class="control login">
-                <button v-on:click="oauthLogin" class="button is-success is-outlined is-medium is-fullwidth">Authorize</button>
+                <button @click="oauthLogin" class="button is-success is-outlined is-medium is-fullwidth">Authorize</button>
               </p>
             </div>
             <div class="section forgot-password">

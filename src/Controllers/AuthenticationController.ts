@@ -3,8 +3,10 @@ import { IMiddleware, IRouterContext } from 'koa-router';
 import * as jwt from 'jsonwebtoken';
 import { Inject, Singleton } from 'typescript-ioc';
 import axios from 'axios';
+import * as request from 'request';
 
 import AuthenticationService from '../Services/AuthenticationService';
+import ParseIni from '../Services/ParseIni';
 import { User, IJWTobj } from '../Models/User';
 
 @Singleton
@@ -54,6 +56,53 @@ export default class AuthenticationController {
       //   'Authorization': `Bearer ${token}`
       // });
       ctx.body = {token};
+    } catch (e) {
+      console.log(e);
+      ctx.throw(401);
+    }
+  }
+
+  private async getDefaultConfig() {
+    return new Promise((resolve, reject) => {
+      request.get(<any>process.env.CONFIG_TEMPLATE, (error: any, response: any, body: any) => {
+        if (!error && response.statusCode === 200) {
+          resolve(body);
+        } else {
+          reject(error);
+        }
+      });
+    });
+  }
+
+  public async userConfig(ctx: IRouterContext) {
+    try {
+      const userData = this.getUserFromToken(ctx);
+
+      const user = await this.authenticationService.findByIdDevices(userData.id);
+      const blankConfig = await this.getDefaultConfig();
+
+      const parser = new ParseIni();
+      parser.parse(<string>blankConfig);
+      parser.setOjb(user.$config);
+
+      ctx.body = { user, config: parser.ini };
+    } catch (e) {
+      console.log(e);
+      ctx.throw(401);
+    }
+  }
+
+  public async saveUserConfig(ctx: IRouterContext) {
+    try {
+      const userData = this.getUserFromToken(ctx);
+
+      const userConfig = ctx.request.body.config;
+
+      const parser = new ParseIni();
+      parser.parse(<string>userConfig);
+      console.log(parser.schema);
+
+      ctx.body = {};
     } catch (e) {
       console.log(e);
       ctx.throw(401);
