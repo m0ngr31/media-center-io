@@ -8,15 +8,18 @@
               <a class="nav-item" href="/">
                 <h1 class="title is-5">Media Center</h1>
               </a>
-              <a class="nav-item" router-link to="edit">Edit Config</a>
-              <a class="nav-item" router-link to="help">Help</a>
+              <!-- <a class="nav-item" router-link to="edit">Edit Config</a>
+              <a class="nav-item" router-link to="help">Help</a> -->
+              <a class="nav-item" href="//github.com/m0ngr31/kodi-alexa/issues" target="_blank">
+                <i class="fa fa-bug"></i>&nbsp;Report an issue
+              </a>
             </div>
             <span class="nav-toggle" data-target="mainMenu">
               <span></span>
               <span></span>
               <span></span>
             </span>
-            <div class="nav-right nav-menu" id="mainMenu">
+            <!-- <div class="nav-right nav-menu" id="mainMenu">
               <a class="nav-item" href="//github.com/m0ngr31/kodi-alexa/issues" target="_blank">
                 <i class="fa fa-bug"></i>&nbsp;Report an issue
               </a>
@@ -30,7 +33,7 @@
                   <i class="fa fa-twitter"></i>
                 </span>
               </a>
-            </div>
+            </div> -->
           </div>
         </nav>
       </div>

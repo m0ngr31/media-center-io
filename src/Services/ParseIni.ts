@@ -117,6 +117,42 @@ export default class ParseIni {
     this.parse(newLines);
   }
 
+  public verifyData(): Boolean {
+    try {
+      if (this.schema && (this.schema['default'] || this.schema['DEFAULT'])) {
+        let data;
+
+        if (this.schema['default']) {
+          data = this.schema['default'];
+        } else {
+          data = this.schema['DEFAULT'];
+        }
+
+        if (!data.address || (data.address && !data.address.length)) {
+          return false;
+        }
+
+        if (!data.port || (data.port && !data.port.length)) {
+          return false;
+        }
+
+        if (!data.username || (data.username && !data.username.length)) {
+          return false;
+        }
+
+        if (!data.password || (data.password && !data.password.length)) {
+          return false;
+        }
+
+        return true;
+      }
+
+      return false;
+    } catch (e) {
+      return false;
+    }
+  }
+
   public parse(ini: string): void {
     const lines: Array<string> = ini.split(/\n/i);
     let schema: any = {};

@@ -5,6 +5,7 @@ import {Authentication} from './auth';
 declare const process: any;
 
 axios.defaults.baseURL = process.env.API_URL;
+
 axios.interceptors.request.use((config) => {
   if (Authentication.checkAuth()) {
     config.headers.common['Authorization'] = Authentication.getAuthHeader();
@@ -12,6 +13,13 @@ axios.interceptors.request.use((config) => {
   return config;
 }, (error) => {
   return Promise.reject(error);
+});
+
+axios.interceptors.response.use(res => res, err => {
+  if (err.response && err.response.status === 401) {
+    Authentication.logout();
+  }
+  return Promise.reject(err);
 });
 
 export const Requests = {

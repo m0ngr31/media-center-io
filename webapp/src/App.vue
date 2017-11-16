@@ -8,6 +8,8 @@
 import Vue from 'vue';
 import Component from 'vue-class-component';
 
+import {Notifications} from '@/services/notifications';
+
 Component.registerHooks([
   'metaInfo'
 ]);
@@ -16,11 +18,17 @@ Component.registerHooks([
   name: 'app',
 })
 export default class App extends Vue {
+  $toast: any;
+
   public metaInfo(): any {
     return {
       title: 'Home',
       titleTemplate: '%s | Media Center'
     }
+  }
+
+  mounted() {
+    Notifications.service = this.$toast;
   }
 }
 </script>
@@ -29,6 +37,10 @@ export default class App extends Vue {
 @import '~bulmaswatch/lumen/_variables';
 @import '~bulma/bulma';
 @import '~bulmaswatch/lumen/_overrides';
+
+@import '~buefy/src/scss/utils/_variables';
+@import '~buefy/src/scss/utils/_animations';
+@import '~buefy/src/scss/components/_notices';
 </style>
 
 <style>

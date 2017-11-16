@@ -42,7 +42,10 @@ export default class AuthenticationController {
       await ctx.render('amazon', { userToken, webappUrl });
     } catch (e) {
       console.log(e);
-      ctx.throw(401);
+      ctx.status = 401;
+      ctx.body = {
+        error: e
+      };
     }
   }
 
@@ -51,14 +54,17 @@ export default class AuthenticationController {
       const token = ctx.request.body.token;
       const userData = <IJWTobj>jwt.verify(token, <any>process.env.JWT_SECRET);
       // userData.token = authToken;
-      // ctx.set({
-      //   'Access-Control-Expose-Headers': 'Authorization',
-      //   'Authorization': `Bearer ${token}`
-      // });
-      ctx.body = {token};
+      ctx.set({
+        'Access-Control-Expose-Headers': 'Authorization',
+        'Authorization': `Bearer ${token}`
+      });
+      ctx.body = {};
     } catch (e) {
       console.log(e);
-      ctx.throw(401);
+      ctx.status = 401;
+      ctx.body = {
+        error: e
+      };
     }
   }
 
@@ -85,27 +91,40 @@ export default class AuthenticationController {
       parser.parse(<string>blankConfig);
       parser.setOjb(user.$config);
 
-      ctx.body = { user, config: parser.ini };
+      ctx.body = { config: parser.ini };
     } catch (e) {
       console.log(e);
-      ctx.throw(401);
+      ctx.status = 401;
+      ctx.body = {
+        error: e
+      };
     }
   }
 
   public async saveUserConfig(ctx: IRouterContext) {
-    try {
-      const userData = this.getUserFromToken(ctx);
+    const userData = this.getUserFromToken(ctx);
 
+    try {
       const userConfig = ctx.request.body.config;
 
       const parser = new ParseIni();
       parser.parse(<string>userConfig);
-      console.log(parser.schema);
+
+      if (!parser.verifyData()) {
+        throw new Error('Must fill out all required data fields');
+      }
+
+      const user = await this.authenticationService.findById(userData.id);
+      user.$config = parser.schema;
+      await this.authenticationService.save(user);
 
       ctx.body = {};
     } catch (e) {
       console.log(e);
-      ctx.throw(401);
+      ctx.status = 400;
+      ctx.body = {
+        error: e.message
+      };
     }
   }
 

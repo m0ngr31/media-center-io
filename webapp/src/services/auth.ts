@@ -1,22 +1,29 @@
 import {Requests} from './requests';
+import {Notifications} from './notifications';
+
+import router from '@/router/index';
 
 export const Authentication = {
   user: {
     authenticated: false
   },
 
-  login(context: any, data: any) {
+  async login(context: any, data: any) {
     const query = { ...context.$route.query };
     const path = query.from || '/';
     delete query.from;
 
-    Requests.post('/auth/login', data).then((res) => {
-      localStorage.setItem('token', data.token);
+    try {
+      const res = await Requests.post('/auth/login', data);
+      let authToken = res.headers['authorization'];
+      authToken = authToken.replace('Bearer ', '');
+
+      localStorage.setItem('token', authToken);
       this.user.authenticated = true;
-      context.$router.push({ path, query });
-    }).catch((err) => {
-      context.error = err;
-    });
+      router.push({ path, query });
+    } catch (e) {
+      throw new Error('Error logging in');
+    }
   },
 
   oauthLogin(context: any) {
@@ -30,6 +37,14 @@ export const Authentication = {
   logout() {
     localStorage.removeItem('token');
     this.user.authenticated = false;
+    router.push({name: 'Login'});
+
+    Notifications.service.open({
+      duration: 10000,
+      message: `Session Expired. Please login again.`,
+      position: 'is-top',
+      type: 'is-danger'
+    });
   },
 
   checkAuth() {

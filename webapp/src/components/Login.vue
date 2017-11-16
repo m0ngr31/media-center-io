@@ -9,7 +9,7 @@
             </h1>
             <div class="login-form">
               <p class="control login">
-                <button @click="loginAmazon" class="button is-success is-outlined is-medium is-fullwidth">Login with Amazon</button>
+                <button @click="loginAmazon" class="button is-success is-outlined is-medium is-fullwidth" v-bind:class="{'is-loading': isLoading}" :disabled="isLoading">{{isLoading ? '': 'Login with Amazon'}}</button>
               </p>
             </div>
           </div>
@@ -32,17 +32,43 @@ declare const process :any;
   name: 'login',
 })
 export default class Login extends Vue {
+  isLoading: Boolean;
+  $toast: any;
+
   public metaInfo(): any {
     return {
       title: 'Login'
     }
   }
 
-  loginAmazon () {
-    return PromiseWindow.open(`${process.env.API_URL}/connect/amazon`, {height: 600, width: 800}).then((data: any) => {
+  data() {
+    return {
+      isLoading: false
+    };
+  }
+
+  async loginAmazon () {
+    this.isLoading = true;
+
+    try {
+      const data = await PromiseWindow.open(`${process.env.API_URL}/connect/amazon`, {height: 600, width: 800});
       const token = data.result;
-      Authentication.login(this, {token});
-    }, (err: any) => {});
+      await Authentication.login(this, {token});
+    } catch (e) {
+      this.$toast.open({
+        duration: 5000,
+        message: `There was an error logging in. Please try again.`,
+        position: 'is-top',
+        type: 'is-danger'
+      });
+    }
+
+    this.isLoading = false;
+
+    // return PromiseWindow.open(`${process.env.API_URL}/connect/amazon`, {height: 600, width: 800}).then((data: any) => {
+    //   const token = data.result;
+    //   Authentication.login(this, {token});
+    // }, (err: any) => {});
   }
 }
 </script>

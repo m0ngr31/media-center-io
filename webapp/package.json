@@ -12,6 +12,7 @@
   "dependencies": {
     "@websanova/vue-auth": "^2.20.4-beta",
     "axios": "^0.17.1",
+    "buefy": "^0.6.1",
     "bulma": "^0.5.3",
     "bulmaswatch": "^0.5.1",
     "font-awesome": "^4.7.0",

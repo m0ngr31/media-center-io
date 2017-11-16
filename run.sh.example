@@ -11,5 +11,6 @@ export DB_PORT=""
 export DB_USER=""
 export DB_PASS=""
 export WEBAPP_URL=""
+export CONFIG_TEMPLATE=""
 
 nodemon --exec "ts-node" ./src/index.ts

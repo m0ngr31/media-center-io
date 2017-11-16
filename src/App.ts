@@ -48,6 +48,19 @@ export default class App {
     app.keys = ['grant'];
     const router: Router = new Router();
 
+    app.use((ctx, next) => {
+      return next().catch((err) => {
+        if (err.status === 401) {
+          ctx.status = 401;
+          ctx.body = {
+            error: err.originalError ? err.originalError.message : err.message
+          };
+        } else {
+          throw err;
+        }
+      });
+    });
+
     app.use(cors({
       origin: <any>process.env.WEBAPP_URL,
       credentials: true,
