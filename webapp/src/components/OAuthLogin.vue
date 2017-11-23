@@ -4,15 +4,15 @@
       <div class="container">
         <div class="columns">
           <div class="column is-8 is-offset-2">
-            <h1 class="avatar has-text-centered section">
-              <img src="/static/img/logo.png" height="128" width="128">
+            <h1 class="has-text-centered section">
+              <img src="/static/img/logo2.png" height="256" width="256">
             </h1>
             <div class="login-form">
               <p class="has-text-centered">
                 Give Amazon permission to use this app?
               </p>
               <p class="control login">
-                <button @click="oauthLogin" class="button is-success is-outlined is-medium is-fullwidth">Authorize</button>
+                <button @click="oauthLogin" class="button is-info is-outlined is-medium is-fullwidth">Authorize</button>
               </p>
             </div>
             <div class="section forgot-password">

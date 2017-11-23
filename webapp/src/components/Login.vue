@@ -4,12 +4,12 @@
       <div class="container">
         <div class="columns">
           <div class="column is-8 is-offset-2">
-            <h1 class="avatar has-text-centered section">
-              <img src="/static/img/logo.png" height="128" width="128">
+            <h1 class="has-text-centered section">
+              <img src="/static/img/logo2.png" height="256" width="256">
             </h1>
             <div class="login-form">
               <p class="control login">
-                <button @click="loginAmazon" class="button is-success is-outlined is-medium is-fullwidth" v-bind:class="{'is-loading': isLoading}" :disabled="isLoading">{{isLoading ? '': 'Login with Amazon'}}</button>
+                <button @click="loginAmazon" class="button is-info is-outlined is-medium is-fullwidth" v-bind:class="{'is-loading': isLoading}" :disabled="isLoading">{{isLoading ? '': 'Login with Amazon'}}</button>
               </p>
             </div>
           </div>
@@ -64,11 +64,6 @@ export default class Login extends Vue {
     }
 
     this.isLoading = false;
-
-    // return PromiseWindow.open(`${process.env.API_URL}/connect/amazon`, {height: 600, width: 800}).then((data: any) => {
-    //   const token = data.result;
-    //   Authentication.login(this, {token});
-    // }, (err: any) => {});
   }
 }
 </script>

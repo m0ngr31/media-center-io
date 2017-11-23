@@ -3,7 +3,7 @@
     <div class="field container">
       <h3 class="title">Skill Configuration</h3>
       <div class="control">
-        <textarea class="textarea max-height ta-margin" type="text" v-model="config"></textarea>
+        <textarea class="textarea max-height ta-margin" type="text" v-model="config" :disabled="isLoading"></textarea>
         <button class="button is-primary is-medium is-pulled-right submit-btn" v-bind:class="{'is-loading btn-loading': isLoading}" @click="saveConfig" :disabled="isLoading">{{isLoading ? '': 'Save Config'}}</button>
       </div>
     </div>
@@ -22,7 +22,6 @@ import {Requests} from '@/services/requests';
 export default class EditConfig extends Vue {
   config: String;
   isLoading: Boolean;
-  preventSave: Boolean;
   $toast: any;
 
   public metaInfo(): any {
@@ -31,34 +30,39 @@ export default class EditConfig extends Vue {
     }
   }
 
-  mounted() {
-    Requests.get('/user/config').then((res: any) => {
-      this.config = res.data.config;
-    });
+  async mounted() {
+    this.isLoading = true;
+
+    try {
+      const res = await Requests.get('/user/config');
+      this.config = res.data.config
+    } catch (e) {
+      this.$toast.open({
+        duration: 5000,
+        message: `There was an error loading your config. Do you have access to the internet?`,
+        position: 'is-top',
+        type: 'is-danger'
+      });
+    }
+
+    this.isLoading = false;
   }
 
   data() {
     return {
       config: '',
-      preventSave: false,
       isLoading: false
     };
   }
 
   async saveConfig() {
-    if (this.preventSave) {
-      return;
-    }
-
     this.isLoading = true;
 
     try {
       await Requests.post('/user/config/save', { config: this.config });
 
       this.$toast.open({
-        // duration: 2000,
         message: `Configuration saved successfully`,
-        // position: 'is-top',
         type: 'is-success'
       });
     } catch (e) {

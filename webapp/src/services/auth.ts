@@ -26,12 +26,13 @@ export const Authentication = {
     }
   },
 
-  oauthLogin(context: any) {
-    Requests.post('/auth/login', {}).then((res) => {
+  async oauthLogin(context: any) {
+    try {
+      await Requests.post('/auth/login', {});
       location.replace(context.$route.redirect_uri);
-    }).catch((err) => {
-      context.error = err;
-    });
+    } catch (e) {
+      throw new Error('Error authorizing with OAuth');
+    }
   },
 
   logout() {
@@ -48,7 +49,7 @@ export const Authentication = {
   },
 
   checkAuth() {
-    var jwt = localStorage.getItem('token');
+    let jwt = localStorage.getItem('token');
     if (jwt) {
       this.user.authenticated = true;
     }
