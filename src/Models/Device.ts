@@ -15,26 +15,6 @@ export class Device {
   @ManyToOne(type => User, user => user.devices)
   public user: User;
 
-  // Encrypt/decrypt device_id when setting or getting
-  @BeforeInsert()
-  beforeInsert() {
-    this.encryptDeviceId();
-  }
-
-  @BeforeUpdate()
-  beforeUption() {
-    this.encryptDeviceId();
-  }
-
-  @AfterLoad()
-  decryptConfig() {
-    this.device_id = encryptor.decrypt(this.device_id);
-  }
-
-  private encryptDeviceId() {
-    this.device_id = encryptor.encrypt(this.device_id);
-  }
-
   public static newDevice(deviceId: string): Device {
     const device = new Device();
     device.device_id = deviceId;

@@ -12,7 +12,7 @@
                 Give Amazon permission to use this app?
               </p>
               <p class="control login">
-                <button @click="oauthLogin" class="button is-info is-outlined is-medium is-fullwidth">Authorize</button>
+                <button @click="oauthLogin" class="button is-info is-outlined is-medium is-fullwidth" v-bind:class="{'is-loading': isLoading}" :disabled="isLoading">{{isLoading ? '': 'Authorize'}}</button>
               </p>
             </div>
             <div class="section forgot-password">
@@ -39,14 +39,36 @@ declare const process :any;
   name: 'oauth-login',
 })
 export default class OAuthLogin extends Vue {
+  isLoading: Boolean;
+  $toast: any;
+
   public metaInfo(): any {
     return {
       title: 'Authorize'
     }
   }
 
-  oauthLogin () {
-    Authentication.oauthLogin(this);
+  data() {
+    return {
+      isLoading: false
+    };
+  }
+
+  async oauthLogin () {
+    this.isLoading = true;
+
+    try {
+      Authentication.oauthLogin(this);
+    } catch (e) {
+      this.$toast.open({
+        duration: 5000,
+        message: `There was an error authorizing. Please try again.`,
+        position: 'is-top',
+        type: 'is-danger'
+      });
+    }
+
+    this.isLoading = false;
   }
 }
 </script>

@@ -3,6 +3,8 @@ import {Notifications} from './notifications';
 
 import router from '@/router/index';
 
+declare const process: any;
+
 export const Authentication = {
   user: {
     authenticated: false
@@ -27,25 +29,31 @@ export const Authentication = {
   },
 
   async oauthLogin(context: any) {
+    const query = { ...context.$route.query };
+    query.redirect_uri = `${process.env.API_URL}/oauth/finish`;
+
     try {
-      await Requests.post('/auth/login', {});
-      location.replace(context.$route.redirect_uri);
+      const res = await Requests.post('/oauth/authorize', query);
+      const params = Object.keys(res.data).map(key => `${key}=${encodeURIComponent(res.data[key])}`).join('&');
+      // location.href = `${context.$route.query.redirect_uri}?${params}`;
     } catch (e) {
       throw new Error('Error authorizing with OAuth');
     }
   },
 
-  logout() {
+  logout(showMsg?: Boolean) {
     localStorage.removeItem('token');
     this.user.authenticated = false;
     router.push({name: 'Login'});
 
-    Notifications.service.open({
-      duration: 10000,
-      message: `Session Expired. Please login again.`,
-      position: 'is-top',
-      type: 'is-danger'
-    });
+    if (showMsg) {
+      Notifications.service.open({
+        duration: 10000,
+        message: `Session Expired. Please login again.`,
+        position: 'is-top',
+        type: 'is-danger'
+      });
+    }
   },
 
   checkAuth() {

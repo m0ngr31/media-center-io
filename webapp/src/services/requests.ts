@@ -17,7 +17,7 @@ axios.interceptors.request.use((config) => {
 
 axios.interceptors.response.use(res => res, err => {
   if (err.response && err.response.status === 401) {
-    Authentication.logout();
+    Authentication.logout(true);
   }
   return Promise.reject(err);
 });

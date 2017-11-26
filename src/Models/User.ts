@@ -30,16 +30,16 @@ export class User {
   private config: any;
 
   @Column({nullable: true})
-  private accessToken: string;
+  public accessToken: string;
 
   @Column({nullable: true})
-  private accessTokenExpiresOn: Date;
+  private accessTokenExpiresAt: Date;
 
   @Column({nullable: true})
-  private refreshToken: string;
+  public refreshToken: string;
 
   @Column({nullable: true})
-  private refreshTokenExpiresOn: Date;
+  private refreshTokenExpiresAt: Date;
 
   @OneToMany(type => Device, device => device.user)
   public devices: Device[];
@@ -110,6 +110,22 @@ export class User {
     return this.config;
   }
 
+  public get $accessToken(): string {
+    return this.accessToken;
+  }
+
+  public get $accessTokenExpiresAt(): Date {
+    return this.accessTokenExpiresAt;
+  }
+
+  public get $refreshToken(): string {
+    return this.refreshToken;
+  }
+
+  public get $refreshTokenExpiresAt(): Date {
+    return this.refreshTokenExpiresAt;
+  }
+
   public get $devices(): Device[] {
     return this.devices;
   }
@@ -128,5 +144,21 @@ export class User {
 
   public set $config(value: any) {
     this.config = value;
+  }
+
+  public set $accessToken(value: string) {
+    this.accessToken = value;
+  }
+
+  public set $accessTokenExpiresAt(value: Date) {
+    this.accessTokenExpiresAt = value;
+  }
+
+  public set $refreshToken(value: string) {
+    this.refreshToken = value;
+  }
+
+  public set $refreshTokenExpiresAt(value: Date) {
+    this.refreshTokenExpiresAt = value;
   }
 }

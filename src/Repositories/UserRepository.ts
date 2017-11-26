@@ -4,7 +4,7 @@ import { Singleton } from 'typescript-ioc';
 import { User } from '../Models/User';
 
 @Singleton
-export default class AuthenticationRepository {
+export default class UserRepository {
   constructor() { }
 
   protected getRepository() {
@@ -35,6 +35,22 @@ export default class AuthenticationRepository {
     const result = await this.getRepository().findOne({ user_id });
     if (!result) {
       throw new Error('No user was found for AmazonId: ' + user_id);
+    }
+    return result;
+  }
+
+  public async findUserByAccessToken(accessToken: string): Promise<User> {
+    const result = await this.getRepository().findOne({ accessToken });
+    if (!result) {
+      throw new Error('No user was found for accessToken: ' + accessToken);
+    }
+    return result;
+  }
+
+  public async findUserByRefreshToken(refreshToken: string): Promise<User> {
+    const result = await this.getRepository().findOne({ refreshToken });
+    if (!result) {
+      throw new Error('No user was found for refreshToken: ' + refreshToken);
     }
     return result;
   }

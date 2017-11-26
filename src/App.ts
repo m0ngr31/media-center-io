@@ -15,17 +15,19 @@ import { createConnection } from 'typeorm';
 import { Inject } from 'typescript-ioc';
 
 import exceptionHandler from './ExceptionHandler';
-import Playground from './Playground';
 
-import AuthenticationRoutes from './Routes/AuthenticationRoutes';
+import MainRoutes from './Routes/MainRoutes';
+import OAuthRoutes from './Routes/OAuthRoutes';
 
 import { User } from './Models/User';
 import { Device } from './Models/Device';
+import { OAuthToken } from './Models/OAuth';
 
 export default class App {
 
   constructor(
-    @Inject private authenticationRoutes: AuthenticationRoutes
+    @Inject private authenticationRoutes: MainRoutes,
+    @Inject private oauthRoutes: OAuthRoutes
   ) {}
 
   private async createApp() {
@@ -38,7 +40,8 @@ export default class App {
       database: <any>process.env.DB_NAME,
       entities: [
         User,
-        Device
+        Device,
+        OAuthToken
       ],
       synchronize: true,
       logging: false
@@ -61,17 +64,27 @@ export default class App {
       });
     });
 
-    app.use(cors({
-      origin: <any>process.env.WEBAPP_URL,
-      credentials: true,
-      allowHeaders: ['Content-Type', 'Authorization', 'Accept'],
-    }));
+    app.use(async (ctx: any, next) => {
+      ctx.request.session = ctx.session;
+      await next();
+    });
+
+    app.use(cors());
+
     app.use(views(path.join(__dirname, '/Views'), { extension: 'ejs' }));
+
     app.use(
       jwt({
         secret: <any>process.env.JWT_SECRET,
       }).unless({
-        path: [/^\/connect/, /^\/callback/, /^\/oauth/, /^\/auth\/login/],
+        path: [
+          /^\/connect/,
+          /^\/callback/,
+          /^\/auth\/login/,
+          /^\/oauth\/token/,
+          /^\/oauth\/config/,
+          /^\/oauth\/finish/,
+        ],
       })
     );
 
@@ -97,7 +110,9 @@ export default class App {
     app.use(bodyParser());
     app.use(exceptionHandler);
     app.use(router.routes());
+    app.use(this.oauthRoutes.router.routes());
     app.use(router.allowedMethods());
+    app.use(this.oauthRoutes.router.allowedMethods());
 
     return Promise.resolve(app);
   }
