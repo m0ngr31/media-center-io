@@ -7,7 +7,12 @@
   "scripts": {
     "build": "tsc --rootDir ./src/",
     "start": "./run.sh",
-    "start:debug": "ts-node --inspect=5858 --debug-brk --ignore false src/index.ts"
+    "start:debug": "ts-node --inspect=5858 --debug-brk --ignore false src/index.ts",
+    "postinstall": "npm install --only=dev && npm run build"
+  },
+  "engines": {
+    "node": ">= 8.0.0",
+    "npm": ">= 5.0.0"
   },
   "license": "MIT",
   "devDependencies": {

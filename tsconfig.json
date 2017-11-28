@@ -26,6 +26,7 @@
     "node_modules",
     "scripts",
     "test",
-    "e2e"
+    "e2e",
+    "webapp"
   ]
 }
