@@ -17,17 +17,14 @@ import { Inject } from 'typescript-ioc';
 import exceptionHandler from './ExceptionHandler';
 
 import MainRoutes from './Routes/MainRoutes';
-import OAuthRoutes from './Routes/OAuthRoutes';
 
 import { User } from './Models/User';
 import { Device } from './Models/Device';
-import { OAuthToken } from './Models/OAuth';
 
 export default class App {
 
   constructor(
-    @Inject private authenticationRoutes: MainRoutes,
-    @Inject private oauthRoutes: OAuthRoutes
+    @Inject private authenticationRoutes: MainRoutes
   ) {}
 
   private async createApp() {
@@ -41,7 +38,6 @@ export default class App {
       entities: [
         User,
         Device,
-        OAuthToken
       ],
       synchronize: true,
       logging: false
@@ -69,7 +65,11 @@ export default class App {
       await next();
     });
 
-    app.use(cors());
+    app.use(cors({
+      origin: <any>process.env.WEBAPP_URL,
+      credentials: true,
+      allowHeaders: ['Content-Type', 'Authorization', 'Accept'],
+    }));
 
     app.use(views(path.join(__dirname, '/Views'), { extension: 'ejs' }));
 
@@ -81,9 +81,7 @@ export default class App {
           /^\/connect/,
           /^\/callback/,
           /^\/auth\/login/,
-          /^\/oauth\/token/,
-          /^\/oauth\/config/,
-          /^\/oauth\/finish/,
+          /^\/user\/config\/skill/
         ],
       })
     );
@@ -110,9 +108,7 @@ export default class App {
     app.use(bodyParser());
     app.use(exceptionHandler);
     app.use(router.routes());
-    app.use(this.oauthRoutes.router.routes());
     app.use(router.allowedMethods());
-    app.use(this.oauthRoutes.router.allowedMethods());
 
     return Promise.resolve(app);
   }

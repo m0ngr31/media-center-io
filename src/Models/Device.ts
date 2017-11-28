@@ -10,7 +10,7 @@ export class Device {
   private id: number;
 
   @Column()
-  private device_id: string;
+  public device_id: string;
 
   @ManyToOne(type => User, user => user.devices)
   public user: User;
@@ -32,5 +32,13 @@ export class Device {
 
   public get $user(): User {
     return this.user;
+  }
+
+  public set $device_id(value: string) {
+    this.device_id = value;
+  }
+
+  public set $user(value: User) {
+    this.user = value;
   }
 }

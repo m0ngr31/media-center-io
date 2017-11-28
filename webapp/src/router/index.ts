@@ -10,7 +10,6 @@ import Commands from '@/components/Commands.vue';
 
 import Auth from '@/components/Auth.vue';
 import Login from '@/components/Login.vue';
-import OAuthLogin from '@/components/OAuthLogin.vue';
 
 import {RouterCheckAuth} from '@/services/auth';
 
@@ -61,13 +60,6 @@ const appRoutes = new Router({
           name: 'Login',
           component: Login,
           meta: { auth: false },
-        },
-        {
-          path: '/oauth',
-          alias: 'oauth',
-          name: 'OAuth Login',
-          component: OAuthLogin,
-          meta: { auth: true },
         }
       ]
     },

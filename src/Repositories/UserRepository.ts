@@ -39,6 +39,14 @@ export default class UserRepository {
     return result;
   }
 
+  public async findUserByAmazonIdDevices(user_id: string): Promise<User> {
+    const result = await this.getRepository().findOne({ where: { user_id }, relations: ["devices"] });
+    if (!result) {
+      throw new Error('No user was found for AmazonId: ' + user_id);
+    }
+    return result;
+  }
+
   public async findUserByAccessToken(accessToken: string): Promise<User> {
     const result = await this.getRepository().findOne({ accessToken });
     if (!result) {

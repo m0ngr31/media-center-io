@@ -6,24 +6,25 @@ import axios from 'axios';
 import * as request from 'request';
 
 import UserService from '../Services/UserService';
-import OAuthService from '../Services/OAuthService';
+import DeviceService from '../Services/DeviceService';
 import ParseIni from '../Services/ParseIni';
 
 import { User, IJWTobj } from '../Models/User';
-import { OAuthToken, IOAuthCode } from '../Models/OAuth';
+import { Device } from '../Models/Device';
 
 @Singleton
 export default class MainController {
   constructor(
     @Inject private userService: UserService,
-    @Inject private oauthService: OAuthService
+    @Inject private deviceService: DeviceService
   ) { }
 
-  private async getAmazonUser(access_token: String): Promise<any> {
+  private async getAmazonUser(access_token: string): Promise<any> {
     try {
       const res = await axios.get(`https://api.amazon.com/user/profile?access_token=${access_token}`);
       return res.data;
     } catch (e) {
+      console.log(e);
       throw new Error(e);
     }
   }
@@ -91,16 +92,43 @@ export default class MainController {
       const userData = this.getUserFromToken(ctx.request);
 
       const user = await this.userService.findByIdDevices(userData.id);
-      const blankConfig = await this.getDefaultConfig();
+      let blankConfig = await this.getDefaultConfig();
 
       const parser = new ParseIni();
       parser.parse(<string>blankConfig);
       parser.setOjb(user.$config);
 
+      if (user.devices.length) {
+        let extraDevicesInfo = [
+          '\n\n# Here are devices that I have detected automatically. Just remove the \'#\' before them\n',
+          '# and configure normally. These get added as you use the skill, so check back after you\'ve\n',
+          '# used some more devices!'
+        ];
+
+        let unusedDeviceCount = 0;
+
+        user.devices.forEach(device => {
+          const deviceObj = parser.schema[device.$device_id];
+          const deviceId = device.$device_id;
+
+          if (!deviceObj) {
+            extraDevicesInfo.push(`\n\n#[${deviceId}]\n`);
+            extraDevicesInfo.push('address=living-room-kodi');
+            unusedDeviceCount += 1;
+          }
+        });
+
+        if (unusedDeviceCount > 0) {
+          extraDevicesInfo.forEach(line => {
+            parser.ini += line;
+          });
+        }
+      }
+
       ctx.body = { config: parser.ini };
     } catch (e) {
       console.log(e);
-      ctx.status = 401;
+      ctx.status = 400;
       ctx.body = {
         error: e
       };
@@ -140,115 +168,46 @@ export default class MainController {
     ctx.body = user;
   }
 
-  public async getOAuthUser(request: Request) {
-    const userObj: IJWTobj = this.getUserFromToken(request);
-    const user = await this.userService.findById(userObj.id);
-    return user;
-  }
+  public async userConfigSkill(ctx: IRouterContext) {
+    let user;
 
-  public async saveAuthToken(data: IOAuthCode) {
-    const token = OAuthToken.newToken(data);
-    await this.oauthService.SaveOrCreate(token);
-  }
-
-  public async getAuthToken(authToken: string) {
     try {
-      const token = await this.oauthService.findByAuthCode(authToken);
-      const authTokenData = {
-        ...token,
-        client: {
-          id: token.$clientId
-        },
-        user: {
-          id: token.$userId
-        }
+      const amazonUser = await this.getAmazonUser(ctx.request.body.accessToken);
+      user = await this.userService.findByAmazonIdDevices(amazonUser.user_id);
+    } catch (e) {
+      console.log(e);
+      ctx.status = 401;
+      ctx.body = {
+        error: e.message
       };
-
-      return authTokenData;
-    } catch (e) {
-      return null;
+      return;
     }
-  }
 
-  public async revokeAuthToken(authToken: string) {
     try {
-      const token = await this.oauthService.findByAuthCode(authToken);
-      await this.oauthService.delete(token.$id);
-      return true;
+      if (ctx.request.body.device && ctx.request.body.device !== 'Unknown Device') {
+        const device = new Device();
+        device.$device_id = ctx.request.body.device;
+        await this.deviceService.findOrCreate(device, user);
+      }
     } catch (e) {
-      return false;
-    }
-  }
-
-  public async saveAccessToken(accessToken: any, client: any, userData: any) {
-    try {
-      const user = await this.userService.findByAmazonId(userData.id);
-      user.$accessToken = accessToken.accessToken;
-      user.$accessTokenExpiresAt = accessToken.accessTokenExpiresAt;
-      user.$refreshToken = accessToken.refreshToken;
-      user.$refreshTokenExpiresAt = accessToken.refreshTokenExpiresAt;
-
-      await this.userService.save(user);
-
-      const newTokenData = {
-        ...accessToken,
-        client,
-        user: userData
+      console.log(e);
+      ctx.status = 400;
+      ctx.body = {
+        error: e.message
       };
-
-      return newTokenData;
-    } catch (e) {
-      return null;
+      return;
     }
-  }
 
-  public async getAccessToken(accessToken: string) {
-    try {
-      const user = await this.userService.findByAccessToken(accessToken);
-      const token = {
-        accessToken: user.$accessToken,
-        accessTokenExpiresAt: user.$accessTokenExpiresAt,
-        user: {
-          id: user.$user_id
-        }
-      };
+    const parser = new ParseIni();
+    parser.parse('');
+    parser.setOjb(user.$config);
 
-      return token;
-    } catch (e) {
-      return null;
-    }
-  }
+    console.log({
+      ini: parser.ini
+    });
 
-  public async getRefreshToken(refreshToken: string) {
-    try {
-      const user = await this.userService.findByRefresToken(refreshToken);
-      const token = {
-        refreshToken: user.$refreshToken,
-        refreshTokenExpiresAt: user.$refreshTokenExpiresAt,
-        user: {
-          id: user.$user_id
-        }
-      };
-
-      return token;
-    } catch (e) {
-      return null;
-    }
-  }
-
-  public async revokeToken(token: any) {
-    try {
-      const user = await this.userService.findByRefresToken(token.refreshToken);
-      user.$accessToken = '';
-      user.$refreshToken = '';
-      await this.userService.save(user);
-      return true;
-    } catch (e) {
-      return false;
-    }
-  }
-
-  public async finishOAuth(ctx: IRouterContext) {
-    ctx.body = ctx.request.query;
+    ctx.body = {
+      ini: parser.ini
+    };
   }
 }

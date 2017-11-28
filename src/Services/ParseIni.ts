@@ -38,20 +38,27 @@ export default class ParseIni {
   }
 
   public setOjb(obj: any) {
-    if (!this.ini)
+    if (!this.ini && !(this.ini.length === 0))
       return;
+
+    const objCheck = {...obj};
 
     const lines: Array<string> = this.ini.split(/\n/i);
     let lastHeader: string = 'unset';
     let foundHeader: number = -1;
     let foundMatch: boolean = false;
 
+    // Adding obj data to existing ini sheet
     for (let a: number = 0; a < lines.length; a++) {
       let cleanLine = this.cleanComments(lines[a]);
 
       if (cleanLine.length > 0) {
         // Determine if it's a header or setting
         if (this.headerCheck(cleanLine)) {
+          if (lastHeader !== 'unset') {
+            delete objCheck[lastHeader];
+          }
+
           lastHeader = cleanLine.replace(/(\[|\])/g, '');
 
           if (!obj[lastHeader])
@@ -65,6 +72,18 @@ export default class ParseIni {
 
           if (obj[lastHeader][cleanLine]) {
             lines[a] = `${cleanLine}=${obj[lastHeader][cleanLine]}`;
+          }
+        }
+      }
+    }
+
+    // Adding in data that isn't in there by default
+    for (let key in objCheck) {
+      if (objCheck.hasOwnProperty(key)) {
+        lines.push(`\n[${key}]`);
+        for (let subkey in objCheck[key]) {
+          if (objCheck[key].hasOwnProperty(subkey)) {
+            lines.push(`${subkey}=${objCheck[key][subkey]}`);
           }
         }
       }

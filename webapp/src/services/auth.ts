@@ -28,19 +28,6 @@ export const Authentication = {
     }
   },
 
-  async oauthLogin(context: any) {
-    const query = { ...context.$route.query };
-    query.redirect_uri = `${process.env.API_URL}/oauth/finish`;
-
-    try {
-      const res = await Requests.post('/oauth/authorize', query);
-      const params = Object.keys(res.data).map(key => `${key}=${encodeURIComponent(res.data[key])}`).join('&');
-      // location.href = `${context.$route.query.redirect_uri}?${params}`;
-    } catch (e) {
-      throw new Error('Error authorizing with OAuth');
-    }
-  },
-
   logout(showMsg?: Boolean) {
     localStorage.removeItem('token');
     this.user.authenticated = false;

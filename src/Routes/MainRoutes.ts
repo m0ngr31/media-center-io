@@ -18,6 +18,7 @@ export default class MainRoutes extends IRoutes {
       Route.newRoute('/auth/user', 'get', async (ctx: IRouterContext) => this.mainController.verify(ctx)),
       Route.newRoute('/user/config', 'get', async (ctx: IRouterContext) => this.mainController.userConfig(ctx)),
       Route.newRoute('/user/config/save', 'post', async (ctx: IRouterContext) => this.mainController.saveUserConfig(ctx)),
+      Route.newRoute('/user/config/skill', 'post', async (ctx: IRouterContext) => this.mainController.userConfigSkill(ctx))
     ];
   }
 

@@ -27,6 +27,10 @@ export default class UserService {
     return this.userRepository.findUserByAmazonId(amazonId);
   }
 
+  public async findByAmazonIdDevices(amazonId: string) {
+    return this.userRepository.findUserByAmazonIdDevices(amazonId);
+  }
+
   public async findByAccessToken(accessToken: string) {
     return this.userRepository.findUserByAccessToken(accessToken);
   }
