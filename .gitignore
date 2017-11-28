@@ -78,6 +78,6 @@ typings
 
 /webapp/src/**/*.js
 
-/dist
+**/dist
 
 run.sh
