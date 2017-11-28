@@ -5,14 +5,14 @@
   "author": "Joe Ipson",
   "main": "index.js",
   "scripts": {
-    "build": "tsc --rootDir ./src/",
+    "build": "./node_modules/.bin/tsc --rootDir ./src/",
     "start": "./run.sh",
     "start:debug": "ts-node --inspect=5858 --debug-brk --ignore false src/index.ts",
     "postinstall": "npm run build"
   },
   "engines": {
-    "node": ">= 8.0.0",
-    "npm": ">= 5.0.0"
+    "npm": ">= 5.0.0",
+    "node": "8.6.0"
   },
   "license": "MIT",
   "devDependencies": {
