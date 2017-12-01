@@ -202,10 +202,6 @@ export default class MainController {
     parser.parse('');
     parser.setOjb(user.$config);
 
-    console.log({
-      ini: parser.ini
-    });
-
     ctx.body = {
       ini: parser.ini
     };
