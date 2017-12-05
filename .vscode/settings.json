@@ -138,5 +138,26 @@
     "webapp/*.ntvs*": true,
     "webapp/*.njsproj": true,
     "webapp/*.sln": true
-  }
+  },
+  "cSpell.enabledLanguageIds": [
+    "c",
+    "cpp",
+    "csharp",
+    "go",
+    "handlebars",
+    "javascript",
+    "javascriptreact",
+    "json",
+    "latex",
+    "markdown",
+    "php",
+    "plaintext",
+    "python",
+    "restructuredtext",
+    "text",
+    "typescript",
+    "typescriptreact",
+    "yml"
+  ],
+  "cSpell.enabled": true
 }

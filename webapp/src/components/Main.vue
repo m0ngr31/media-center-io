@@ -21,8 +21,11 @@
                 Navigation
               </a>
               <div class="navbar-dropdown is-boxed is-right">
-                <router-link to="/" tag="a" class="navbar-item">
+                <router-link to="edit-config" tag="a" class="navbar-item" v-if="isLoggedIn">
                   Edit Configuration
+                </router-link>
+                <router-link to="getting-started" tag="a" class="navbar-item">
+                  Getting Started
                 </router-link>
                 <router-link to="about" tag="a" class="navbar-item">
                   About
@@ -34,17 +37,20 @@
                   Privacy Policy
                 </router-link>
                 <hr class="navbar-divider">
-                <a class="navbar-item" @click="logout()">
+                <a class="navbar-item" @click="logout()" v-if="isLoggedIn">
                   Logout
                 </a>
+                <router-link to="login" tag="a" class="navbar-item" v-if="!isLoggedIn">
+                  Login
+                </router-link>
                 <hr class="navbar-divider">
-                <a class="navbar-item" href="https://forum.kodi.tv/showthread.php?tid=254502">
+                <a class="navbar-item" href="https://forum.kodi.tv/showthread.php?tid=254502" target="_blank">
                   Help
                 </a>
-                <a class="navbar-item" href="https://github.com/m0ngr31/kodi-alexa">
+                <a class="navbar-item" href="https://github.com/m0ngr31" target="_blank">
                   Github
                 </a>
-                <a class="navbar-item" href="https://twitter.com/m0ngr31">
+                <a class="navbar-item" href="https://twitter.com/m0ngr31" target="_blank">
                   Twitter
                 </a>
               </div>
@@ -74,6 +80,12 @@ export default class Main extends Vue {
   public metaInfo(): any {
     return {
       title: 'Main'
+    }
+  }
+
+  data() {
+    return {
+      isLoggedIn: Authentication.checkAuth()
     }
   }
 

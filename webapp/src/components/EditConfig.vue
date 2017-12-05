@@ -85,8 +85,6 @@ export default class EditConfig extends Vue {
 }
 
 .title {
-  font-size: 25px;
-  font-weight: 600;
   margin-top: 15px;
 }
 

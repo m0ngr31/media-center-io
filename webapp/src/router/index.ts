@@ -7,6 +7,7 @@ import EditConfig from '@/components/EditConfig.vue';
 import About from '@/components/About.vue';
 import PrivacyPolicy from '@/components/PrivacyPolicy.vue';
 import Commands from '@/components/Commands.vue';
+import GettingStarted from '@/components/GettingStarted.vue'
 
 import Auth from '@/components/Auth.vue';
 import Login from '@/components/Login.vue';
@@ -25,7 +26,7 @@ const appRoutes = new Router({
       children: [
         {
           path: '',
-          alias: 'edit',
+          alias: 'edit-config',
           name: 'Edit Config',
           component: EditConfig,
           meta: { auth: true },
@@ -46,6 +47,12 @@ const appRoutes = new Router({
           path: 'example-commands',
           name: 'Commnads',
           component: Commands,
+          meta: { auth: false },
+        },
+        {
+          path: 'getting-started',
+          name: 'Getting Started',
+          component: GettingStarted,
           meta: { auth: false },
         }
       ]
